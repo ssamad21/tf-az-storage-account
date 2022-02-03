@@ -13,6 +13,8 @@ resource "azurerm_resource_group" "resource_group_infra" {
   location = var.location
   tags     = var.tags
 }
+#Template for creating storage account in Azure 
+
 resource "azurerm_storage_account" "storage_account_npd" {
   #Required
   name                          = var.storage_account_name
@@ -29,14 +31,15 @@ resource "azurerm_storage_account" "storage_account_npd" {
   allow_blob_public_access      = var.allow_blob_public_access  
 }
 
-#Create "containers" for datalake storage account
+#Create "containers" for datalake storage account where the data will be dumped and stored for analysis
+
 resource "azurerm_storage_container" "containers" {
   for_each              = var.containers
   storage_account_name  = var.storage_account_name
   name                  = each.value["name"]
   container_access_type = "private"
 }
-#Create data management policy for each container created above.
+#Create data management policy for each container created above. This creates data retention policies
 
 resource "azurerm_storage_management_policy" "storage_management_policy" {
   storage_account_id = azurerm_storage_account.storage_account_npd.id
