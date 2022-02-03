@@ -7,13 +7,13 @@ terraform {
   required_version = ">= 0.13"
 }
 
-resource "azurerm_resource_group" "resource_group" {
+resource "azurerm_resource_group" "resource_group_infra" {
   #Required
   name     = var.resource_group_name
   location = var.location
   tags     = var.tags
 }
-resource "azurerm_storage_account" "storage_account" {
+resource "azurerm_storage_account" "storage_account_npd" {
   #Required
   name                          = var.storage_account_name
   resource_group_name           = var.resource_group_name
@@ -36,9 +36,10 @@ resource "azurerm_storage_container" "containers" {
   name                  = each.value["name"]
   container_access_type = "private"
 }
+#Create data management policy for each container created above.
 
 resource "azurerm_storage_management_policy" "storage_management_policy" {
-  storage_account_id = azurerm_storage_account.storage_account.id
+  storage_account_id = azurerm_storage_account.storage_account_npd.id
 
   rule {
     name    = "landing-archive-after-30-days"

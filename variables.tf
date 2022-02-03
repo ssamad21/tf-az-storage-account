@@ -18,7 +18,7 @@ variable "tags" {
 variable "resource_group_name" {
   type        = string
   description = "The name of the resource group in which to create the storage account. Changing this forces a new resource to be created"
-  default     = "npd_infra_resource_group"
+  default     = "rg_infra_npd_austeast_tf"
 }
 
 variable "storage_account_name" {
